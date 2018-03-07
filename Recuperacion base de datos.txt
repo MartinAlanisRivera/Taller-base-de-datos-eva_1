@@ -1,0 +1,304 @@
+Recuperacion de Base de Datos
+ Cmd.exe
+
+
+C:\wamp\bin\mysql\mysql5.5.8\bin>mysqldump -u root -p inventario < C:\wamp\bin\m
+ysql\mysql5.5.8\bin\respaldo.sql
+
+/*!40000 ALTER TABLE `direccion` DISABLE KEYS */;
+INSERT INTO `direccion` VALUES (1,'Av. Allende','Independencia',3456,'2'),(2,'Ni
+colas bravo','Obrera',32135,'5'),(3,'independencia','Centro',6564,'1'),(4,'Nogal
+es','Paseos dle norte',5136,'6'),(5,'San Agustin','Clemencia',351464,'3'),(6,'To
+rre negra','Fortaleza',351641,'64'),(7,'Torre de marfil','Senescal',3516,'42'),(
+8,'Salon principal','Griffindor',365148,'80'),(9,'Gran salon','Slythering',9684,
+'23'),(10,'Granjas de humedad','Dunas de las Arenas',6846,'56'),(11,'Sala del tr
+ono','Palacio Real',64968,'22'),(12,'Tranquilidad','Bolson',6354,'54'),(13,'Alej
+andria','antiguedad',6846,'81'),(14,'Juarez','Respeto',6468,'40'),(16,'Trinidad'
+,'de Tobago',3658,'754'),(18,'Damasco','Medio Oriente',3548,'18'),(19,'Santa Ana
+','Texas',313,'54'),(20,'Nova Roma','Roma II',65,'4');
+/*!40000 ALTER TABLE `direccion` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `empleados`
+--
+
+DROP TABLE IF EXISTS `empleados`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `empleados` (
+  `no_emepleado` int(11) NOT NULL,
+  `nombre_e` varchar(45) DEFAULT NULL,
+  `apellido_p` varchar(45) DEFAULT NULL,
+  `apellido_m` varchar(45) DEFAULT NULL,
+  `Direccion_Num casa` int(11) NOT NULL,
+  `Ciudad_Num_City` int(11) NOT NULL,
+  PRIMARY KEY (`no_emepleado`,`Direccion_Num casa`,`Ciudad_Num_City`),
+  KEY `fk_empleados_Direccion1_idx` (`Direccion_Num casa`),
+  KEY `fk_empleados_Ciudad1_idx` (`Ciudad_Num_City`),
+  CONSTRAINT `fk_empleados_Ciudad1` FOREIGN KEY (`Ciudad_Num_City`) REFERENCES `
+ciudad` (`Num_City`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_empleados_Direccion1` FOREIGN KEY (`Direccion_Num casa`) REFERE
+NCES `direccion` (`Num casa`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `empleados`
+--
+
+LOCK TABLES `empleados` WRITE;
+/*!40000 ALTER TABLE `empleados` DISABLE KEYS */;
+INSERT INTO `empleados` VALUES (1,'Juan','Perez','Ramirez',12,2),(2,'Aquiles','d
+e la torre','saenz',18,3),(3,'Santiago','Gonzales','Martinz',19,1),(4,'Alejandro
+','de macedonia','Magno',13,4),(5,'Samwise','Hamfast','gamgee',20,10),(6,'Morgun
+','tas','knajh',6,5),(7,'Faramir','Senescal','de Gondor',7,6),(8,'Voldemort','Br
+ujo Oscuro','Innombrable',18,7),(9,'C-3PO','ROBOT','ROBOT',11,9),(10,'Jawa','San
+dCrawler','de arenas',14,8);
+/*!40000 ALTER TABLE `empleados` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `inventario`
+--
+
+DROP TABLE IF EXISTS `inventario`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `inventario` (
+  `productos_clave_producto` varchar(10) NOT NULL,
+  `existencia` int(11) NOT NULL,
+  `inv_min` int(11) NOT NULL,
+  `inv_max` int(11) NOT NULL,
+  PRIMARY KEY (`productos_clave_producto`),
+  KEY `fk_inventario_productos1_idx` (`productos_clave_producto`),
+  CONSTRAINT `fk_inventario_productos1` FOREIGN KEY (`productos_clave_producto`)
+ REFERENCES `productos` (`clave_producto`) ON DELETE NO ACTION ON UPDATE NO ACTI
+ON
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `inventario`
+--
+
+LOCK TABLES `inventario` WRITE;
+/*!40000 ALTER TABLE `inventario` DISABLE KEYS */;
+INSERT INTO `inventario` VALUES ('Alfa',4,1,80),('Beta',10,1,80),('Calipso',8,1,
+80),('Delta',5,1,80),('Epsilion',200,10,5000),('Fire',150,20,2500),('Galius',20,
+10,100),('History',15,5,30),('Irio',6,1,20),('Jouls',3,1,10);
+/*!40000 ALTER TABLE `inventario` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `productos`
+--
+
+DROP TABLE IF EXISTS `productos`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `productos` (
+  `clave_producto` varchar(10) NOT NULL,
+  `descripcion` varchar(45) DEFAULT NULL,
+  `precio_unitario` float NOT NULL,
+  `precio_vta` float NOT NULL,
+  PRIMARY KEY (`clave_producto`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `productos`
+--
+
+LOCK TABLES `productos` WRITE;
+/*!40000 ALTER TABLE `productos` DISABLE KEYS */;
+INSERT INTO `productos` VALUES ('Alfa','Refacciones de Plomeria',10,15),('Beta',
+'Compuertas Logicas',50,100),('Calipso','Refacciones de Carros',60,80),('Delta',
+'Bases de Datos',200,800),('Epsilion','Orcos',150,1000),('Fire','Soldados de Gon
+dor',200,1500),('Galius','Mortifagos',500,2000),('History','Droides',80,300),('I
+rio','Servidumbre',3500,7500),('Jouls','Jardineria y seguridad',4000,25000);
+/*!40000 ALTER TABLE `productos` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `proveedor`
+--
+
+DROP TABLE IF EXISTS `proveedor`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `proveedor` (
+  `no_proveedor` int(11) NOT NULL,
+  `clave_producto` varchar(10) NOT NULL,
+  `precio` float DEFAULT NULL,
+  PRIMARY KEY (`no_proveedor`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `proveedor`
+--
+
+LOCK TABLES `proveedor` WRITE;
+/*!40000 ALTER TABLE `proveedor` DISABLE KEYS */;
+INSERT INTO `proveedor` VALUES (1,'Alfa',8),(2,'Beta',45),(3,'Calipso',50),(4,'D
+elta',180),(5,'Epsilion',125),(6,'Fire',180),(7,'Galius',450),(8,'History',50),(
+9,'Irio',2500),(10,'Jouls',3500);
+/*!40000 ALTER TABLE `proveedor` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `proveedor_has_productos`
+--
+
+DROP TABLE IF EXISTS `proveedor_has_productos`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `proveedor_has_productos` (
+  `proveedor_no_proveedor` int(11) NOT NULL,
+  `productos_clave_producto` varchar(10) NOT NULL,
+  PRIMARY KEY (`proveedor_no_proveedor`,`productos_clave_producto`),
+  KEY `fk_proveedor_has_productos_productos1_idx` (`productos_clave_producto`),
+  KEY `fk_proveedor_has_productos_proveedor1_idx` (`proveedor_no_proveedor`),
+  CONSTRAINT `fk_proveedor_has_productos_productos1` FOREIGN KEY (`productos_cla
+ve_producto`) REFERENCES `productos` (`clave_producto`) ON DELETE NO ACTION ON U
+PDATE NO ACTION,
+  CONSTRAINT `fk_proveedor_has_productos_proveedor1` FOREIGN KEY (`proveedor_no_
+proveedor`) REFERENCES `proveedor` (`no_proveedor`) ON DELETE NO ACTION ON UPDAT
+E NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `proveedor_has_productos`
+--
+
+LOCK TABLES `proveedor_has_productos` WRITE;
+/*!40000 ALTER TABLE `proveedor_has_productos` DISABLE KEYS */;
+INSERT INTO `proveedor_has_productos` VALUES (1,'Alfa'),(2,'Beta'),(3,'Calipso')
+,(4,'Delta'),(5,'Epsilion'),(6,'Fire'),(7,'Galius'),(8,'History'),(9,'Irio'),(10
+,'Jouls');
+/*!40000 ALTER TABLE `proveedor_has_productos` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `ventas`
+--
+
+DROP TABLE IF EXISTS `ventas`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `ventas` (
+  `no_venta` int(11) NOT NULL,
+  `fecha` date DEFAULT NULL,
+  `productos_clave_producto` varchar(10) NOT NULL,
+  `empleados_no_emepleado` int(11) NOT NULL,
+  `clientes_no_cliente` int(11) NOT NULL,
+  PRIMARY KEY (`no_venta`),
+  KEY `fk_ventas_productos1_idx` (`productos_clave_producto`),
+  KEY `fk_ventas_empleados1_idx` (`empleados_no_emepleado`),
+  KEY `fk_ventas_clientes1_idx` (`clientes_no_cliente`),
+  CONSTRAINT `fk_ventas_clientes1` FOREIGN KEY (`clientes_no_cliente`) REFERENCE
+S `clientes` (`no_cliente`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_ventas_empleados1` FOREIGN KEY (`empleados_no_emepleado`) REFER
+ENCES `empleados` (`no_emepleado`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_ventas_productos1` FOREIGN KEY (`productos_clave_producto`) REF
+ERENCES `productos` (`clave_producto`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `ventas`
+--
+
+LOCK TABLES `ventas` WRITE;
+/*!40000 ALTER TABLE `ventas` DISABLE KEYS */;
+INSERT INTO `ventas` VALUES (1,'2017-01-01','Alfa',1,1),(2,'2017-01-01','Beta',2
+,2),(3,'2017-02-01','Calipso',3,3),(4,'2017-02-01','Delta',4,4),(5,'2017-03-01',
+'Epsilion',5,5),(6,'2017-03-01','Fire',6,6),(7,'2017-04-01','Galius',7,7),(8,'20
+17-04-01','History',8,8),(9,'2017-05-01','Irio',9,9),(10,'2017-05-01','Jouls',10
+,10),(11,'2017-01-01','Alfa',1,1);
+/*!40000 ALTER TABLE `ventas` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `ventas_has_clientes`
+--
+
+DROP TABLE IF EXISTS `ventas_has_clientes`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `ventas_has_clientes` (
+  `ventas_no_venta` int(11) NOT NULL,
+  `clientes_no_cliente` int(11) NOT NULL,
+  PRIMARY KEY (`ventas_no_venta`,`clientes_no_cliente`),
+  KEY `fk_ventas_has_clientes_clientes1_idx` (`clientes_no_cliente`),
+  KEY `fk_ventas_has_clientes_ventas_idx` (`ventas_no_venta`),
+  CONSTRAINT `fk_ventas_has_clientes_clientes1` FOREIGN KEY (`clientes_no_client
+e`) REFERENCES `clientes` (`no_cliente`) ON DELETE NO ACTION ON UPDATE NO ACTION
+,
+  CONSTRAINT `fk_ventas_has_clientes_ventas` FOREIGN KEY (`ventas_no_venta`) REF
+ERENCES `ventas` (`no_venta`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `ventas_has_clientes`
+--
+
+LOCK TABLES `ventas_has_clientes` WRITE;
+/*!40000 ALTER TABLE `ventas_has_clientes` DISABLE KEYS */;
+INSERT INTO `ventas_has_clientes` VALUES (1,1),(2,2),(3,3),(4,4),(5,5),(6,6),(7,
+7),(8,8),(9,9),(10,10);
+/*!40000 ALTER TABLE `ventas_has_clientes` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `ventas_has_clientes_has_productos`
+--
+
+DROP TABLE IF EXISTS `ventas_has_clientes_has_productos`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `ventas_has_clientes_has_productos` (
+  `ventas_has_clientes_ventas_no_venta` int(11) NOT NULL,
+  `ventas_has_clientes_clientes_no_cliente` int(11) NOT NULL,
+  `productos_clave_producto` varchar(10) NOT NULL,
+  PRIMARY KEY (`ventas_has_clientes_ventas_no_venta`,`ventas_has_clientes_client
+es_no_cliente`,`productos_clave_producto`),
+  KEY `fk_ventas_has_clientes_has_productos_productos1_idx` (`productos_clave_pr
+oducto`),
+  KEY `fk_ventas_has_clientes_has_productos_ventas_has_clientes1_idx` (`ventas_h
+as_clientes_ventas_no_venta`,`ventas_has_clientes_clientes_no_cliente`),
+  CONSTRAINT `fk_ventas_has_clientes_has_productos_productos1` FOREIGN KEY (`pro
+ductos_clave_producto`) REFERENCES `productos` (`clave_producto`) ON DELETE NO A
+CTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_ventas_has_clientes_has_productos_ventas_has_clientes1` FOREIGN
+ KEY (`ventas_has_clientes_ventas_no_venta`, `ventas_has_clientes_clientes_no_cl
+iente`) REFERENCES `ventas_has_clientes` (`ventas_no_venta`, `clientes_no_client
+e`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `ventas_has_clientes_has_productos`
+--
+
+LOCK TABLES `ventas_has_clientes_has_productos` WRITE;
+/*!40000 ALTER TABLE `ventas_has_clientes_has_productos` DISABLE KEYS */;
+INSERT INTO `ventas_has_clientes_has_productos` VALUES (1,1,'Alfa'),(2,2,'Beta')
+,(3,3,'Calipso'),(4,4,'Delta'),(5,5,'Epsilion'),(6,6,'Fire'),(7,7,'Galius'),(8,8
+,'History'),(9,9,'Irio'),(10,10,'Jouls');
+/*!40000 ALTER TABLE `ventas_has_clientes_has_productos` ENABLE KEYS */;
+UNLOCK TABLES;
+/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
+
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+
+-- Dump completed on 2018-02-21 10:41:25

@@ -1,0 +1,498 @@
+
+Ejercicio 1
+
+MySQL Shell 1.0.11
+
+Copyright (c) 2016, 2017, Oracle and/or its affiliates. All rights reserved.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type '\help' or '\?' for help; '\quit' to exit.
+
+Currently in JavaScript mode. Use \sql to switch to SQL mode and execute queries
+.
+mysql-js> \sql
+Switching to SQL mode... Commands end with ;
+mysql-sql> \connect -c root qlocalhost:3306
+\connect [-<type>] <uri or $name>
+mysql-sql> \connect -c root@localhost:3306
+Creating a Classic Session to 'root@localhost:3306'
+Enter password:
+Your MySQL connection id is 45
+Server version: 5.5.8-log MySQL Community Server (GPL)
+No default schema selected; type \use <schema> to set one.
+mysql-sql> create database ejercicios;
+Query OK, 1 row affected (0.39 sec)
+mysql-sql> create user 'usu_eva1'@'localhost' identified by 'usu'
+       ... ;
+Query OK, 0 rows affected (1.10 sec)
+mysql-sql> grant all privileges on ejercicios.* to 'usu_eva1'@'localhost';
+Query OK, 0 rows affected (0.06 sec)
+mysql-sql>
+
+
+
+Ejercicio 2-9
+
+mysql-js> \sql
+Switching to SQL mode... Commands end with ;
+mysql-sql> \connect -c usu_eva1@localhost:3306
+Creating a Classic Session to 'usu_eva1@localhost:3306'
+Enter password: ***
+Your MySQL connection id is 46
+Server version: 5.5.8-log MySQL Community Server (GPL)
+No default schema selected; type \use <schema> to set one.
+mysql-sql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| ejercicios         |
+| test               |
++--------------------+
+3 rows in set (0.20 sec)
+mysql-sql> \use ejercicios
+Schema set to `ejercicios`.
+mysql-sql> create table alumno(
+       ... alumno_id int not null auto_increment primary key,
+       ... nom_alumno varchar(50) not null,
+       ... ape_pat_alumno varchar(50) not null,
+       ... ape_mat_alumno varchar(50) not null,no_control_alumno
+       ... int unique);
+Query OK, 0 rows affected (1.11 sec)
+mysql-sql> desc alumno;
++-------------------+-------------+------+-----+---------+----------------+
+| Field             | Type        | Null | Key | Default | Extra          |
++-------------------+-------------+------+-----+---------+----------------+
+| alumno_id         | int(11)     | NO   | PRI | null    | auto_increment |
+| nom_alumno        | varchar(50) | NO   |     | null    |                |
+| ape_pat_alumno    | varchar(50) | NO   |     | null    |                |
+| ape_mat_alumno    | varchar(50) | NO   |     | null    |                |
+| no_control_alumno | int(11)     | YES  | UNI | null    |                |
++-------------------+-------------+------+-----+---------+----------------+
+5 rows in set (0.08 sec)
+mysql-sql> alter table alumno change no_control_alumno no_control_alumno int not
+ null unique;
+Query OK, 0 rows affected (0.71 sec)
+
+Records: 0  Duplicates: 0  Warnings: 0
+mysql-sql> desc alumno
+       ... ;
++-------------------+-------------+------+-----+---------+----------------+
+| Field             | Type        | Null | Key | Default | Extra          |
++-------------------+-------------+------+-----+---------+----------------+
+| alumno_id         | int(11)     | NO   | PRI | null    | auto_increment |
+| nom_alumno        | varchar(50) | NO   |     | null    |                |
+| ape_pat_alumno    | varchar(50) | NO   |     | null    |                |
+| ape_mat_alumno    | varchar(50) | NO   |     | null    |                |
+| no_control_alumno | int(11)     | NO   | UNI | null    |                |
++-------------------+-------------+------+-----+---------+----------------+
+5 rows in set (0.01 sec)
+mysql-sql>
+
+
+
+Ejercicio 3
+
+mysql-js> \sql
+Switching to SQL mode... Commands end with ;
+mysql-sql> \connect -c usu_eva1@localhost:3306
+Creating a Classic Session to 'usu_eva1@localhost:3306'
+Enter password: ***
+Your MySQL connection id is 47
+Server version: 5.5.8-log MySQL Community Server (GPL)
+No default schema selected; type \use <schema> to set one.
+mysql-sql> \use alumno
+MySQL Error (1044): Access denied for user 'usu_eva1'@'localhost' to database 'a
+lumno'
+mysql-sql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| ejercicios         |
+| test               |
++--------------------+
+3 rows in set (0.07 sec)
+mysql-sql> \use ejercicios
+Schema set to `ejercicios`.
+mysql-sql> show tables;
++----------------------+
+| Tables_in_ejercicios |
++----------------------+
+| alumno               |
++----------------------+
+1 row in set (0.00 sec)
+mysql-sql> create table if not exists alumno;
+ERROR: 1113 (42000): A table must have at least 1 column
+mysql-sql> create table if not exists alumno(
+       ...        ... alumno_id int not null auto_increment primary key,
+       ...        ... nom_alumno varchar(50) not null,
+       ...        ... ape_pat_alumno varchar(50) not null,
+       ...        ... ape_mat_alumno varchar(50) not null,no_control_alumno
+       ...        ... int unique);
+ERROR: 1064 (42000): You have an error in your SQL syntax; check the manual that
+ corresponds to your MySQL server version for the right syntax to use near '.. a
+lumno_id int not null auto_increment primary key,
+... nom_alumno varchar(50)' at line 2
+mysql-sql> create dup_alumno liike alumno;
+ERROR: 1064 (42000): You have an error in your SQL syntax; check the manual that
+ corresponds to your MySQL server version for the right syntax to use near 'dup_
+alumno liike alumno' at line 1
+mysql-sql> create dup_alumno like alumno;
+ERROR: 1064 (42000): You have an error in your SQL syntax; check the manual that
+ corresponds to your MySQL server version for the right syntax to use near 'dup_
+alumno like alumno' at line 1
+
+eJERCICIO 3
+
+mysql-sql> create table dup_alumno like alumno;
+Query OK, 0 rows affected (0.36 sec)
+mysql-sql> show tables;
++----------------------+
+| Tables_in_ejercicios |
++----------------------+
+| alumno               |
+| dup_alumno           |
++----------------------+
+2 rows in set (0.00 sec)
+mysql-sql>
+
+
+Ejercicio 4
+
+mysql-sql> create table copia_alumno like alumno;
+Query OK, 0 rows affected (0.79 sec)
+mysql-sql> show tables;
++----------------------+
+| Tables_in_ejercicios |
++----------------------+
+| alumno               |
+| copia_alumno         |
+| dup_alumno           |
++----------------------+
+3 rows in set (0.00 sec)
+mysql-sql> select * from copia_alumno;
+Empty set (0.01 sec)
+mysql-sql> select * from alumno;
++-----------+------------+----------------+----------------+-------------------+
+
+| alumno_id | nom_alumno | ape_pat_alumno | ape_mat_alumno | no_control_alumno |
+
++-----------+------------+----------------+----------------+-------------------+
+
+|         1 | Martin     | Alanis         | Rivera         |          16550022 |
+
+|         2 | Israel     | Garcia         | Acosta         |          16550019 |
+
+|         3 | Jose       | Torres         | Cardenas       |          16550038 |
+
+|         4 | Karely     | Aguilar        | Arzate         |          15551431 |
+
+|         5 | Ivonne     | Rodriguez      | Gonzales       |          15060769 |
+
++-----------+------------+----------------+----------------+-------------------+
+
+5 rows in set (0.02 sec)
+mysql-sql>
+
+
+
+Ejercicio 5
+MySQL Shell 1.0.11
+
+Copyright (c) 2016, 2017, Oracle and/or its affiliates. All rights reserved.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type '\help' or '\?' for help; '\quit' to exit.
+
+Currently in JavaScript mode. Use \sql to switch to SQL mode and execute queries
+.
+mysql-js> \sql
+Switching to SQL mode... Commands end with ;
+mysql-sql> \connect -c usu_eva1@localhost:3306
+Creating a Classic Session to 'usu_eva1@localhost:3306'
+Enter password: ***
+Your MySQL connection id is 48
+Server version: 5.5.8-log MySQL Community Server (GPL)
+No default schema selected; type \use <schema> to set one.
+mysql-sql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| ejercicios         |
+| test               |
++--------------------+
+3 rows in set (0.00 sec)
+mysql-sql> \use ejercicios
+Schema set to `ejercicios`.
+mysql-sql> insert into alumno values(1,'Martin','Alanis','Rivera',16550022);
+Query OK, 1 row affected (0.32 sec)
+mysql-sql> insert into alumno values(2,'Israel','Garcia','Acosta',16550019);
+Query OK, 1 row affected (0.18 sec)
+mysql-sql> insert into alumno values(3,'Jose','Torres','Cardenas',16550038);
+Query OK, 1 row affected (0.09 sec)
+mysql-sql> insert into alumno values(4,'Karely','Aguilar','Arzate',15551431);
+Query OK, 1 row affected (0.09 sec)
+mysql-sql> insert into alumno values(5,'Ivonne','Rodriguez','Gonzales',15060769)
+;
+Query OK, 1 row affected (0.10 sec)
+
+
+Ejercicio 6
+
+mysql-sql> \connect -c usu_eva1@localhost:3306
+Creating a Classic Session to 'usu_eva1@localhost:3306'
+Enter password: ***
+Your MySQL connection id is 4
+Server version: 5.5.8-log MySQL Community Server (GPL)
+No default schema selected; type \use <schema> to set one.
+mysql-sql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| ejercicios         |
+| test               |
++--------------------+
+3 rows in set (0.05 sec)
+mysql-sql> \use ejercicios
+Schema set to `ejercicios`.
+mysql-sql> show tables;
++----------------------+
+| Tables_in_ejercicios |
++----------------------+
+| alumno               |
+| copia_alumno         |
+| dup_alumno           |
++----------------------+
+3 rows in set (0.00 sec)
+mysql-sql> create table carrera(
+       ... carrera_1d int not null primary key,
+       ... nombre_carrera varchar(50) not null,
+       ... creditos_carrera int not null);
+Query OK, 0 rows affected (0.18 sec)
+mysql-sql> desc carrera;
++------------------+-------------+------+-----+---------+-------+
+| Field            | Type        | Null | Key | Default | Extra |
++------------------+-------------+------+-----+---------+-------+
+| carrera_1d       | int(11)     | NO   | PRI | null    |       |
+| nombre_carrera   | varchar(50) | NO   |     | null    |       |
+| creditos_carrera | int(11)     | NO   |     | null    |       |
++------------------+-------------+------+-----+---------+-------+
+3 rows in set (0.06 sec)
+mysql-sql>
+
+
+
+Ejercicio 7
+
+mysql-sql> create table docentes(
+       ... docentes_id int not null unique primary key,
+       ... nombre_docente varchar(50) not null,
+       ... apellido_pat_docente varchar(50) not null,
+       ... apellido_mat_docente varchar(50) not null,
+       ... horas_plaza int not null set default 8,
+       ... departamento_docente ENUM('Sistemas y computacion', 'Ingenieria Indus
+trial', 'Ciencias de la Tierra', 'Ciencias Economico Administrativas', 'Ciencias
+ Basicas'));
+ERROR: 1064 (42000): You have an error in your SQL syntax; check the manual that
+ corresponds to your MySQL server version for the right syntax to use near 'set
+default 8,
+departamento_docente ENUM('Sistemas y computacion', 'Ingenieria I' at line 6
+mysql-sql> create table docentes(
+       ... docentes_id int not null unique primary key,
+       ... nombre_docente varchar(50) not null,
+       ... apellido_pat_docente varchar(50) not null,
+       ... apellido_mat_docente varchar(50) not null,
+       ... horas_plaza int not null,
+       ... departamento_docente ENUM('Sistemas y computacion', 'Ingenieria Indus
+trial', 'Ciencias de la Tierra', 'Ciencias Economico Administrativas', 'Ciencias
+ Basicas'));
+Query OK, 0 rows affected (0.11 sec)
+mysql-sql> alter table docentes alter horas_plaza set default 8;
+Query OK, 0 rows affected (0.09 sec)
+
+Records: 0  Duplicates: 0  Warnings: 0
+mysql-sql> desc docentes;
++----------------------+--------------------------------------------------------
+--------------------------------------------------------------------------------
++------+-----+---------+-------+
+| Field                | Type
+
+| Null | Key | Default | Extra |
++----------------------+--------------------------------------------------------
+--------------------------------------------------------------------------------
++------+-----+---------+-------+
+| docentes_id          | int(11)
+
+| NO   | PRI | null    |       |
+| nombre_docente       | varchar(50)
+
+| NO   |     | null    |       |
+| apellido_pat_docente | varchar(50)
+
+| NO   |     | null    |       |
+| apellido_mat_docente | varchar(50)
+
+| NO   |     | null    |       |
+| horas_plaza          | int(11)
+
+| NO   |     | 8       |       |
+| departamento_docente | enum('Sistemas y computacion','Ingenieria Industrial','
+Ciencias de la Tierra','Ciencias Economico Administrativas','Ciencias Basicas')
+| YES  |     | null    |       |
++----------------------+--------------------------------------------------------
+--------------------------------------------------------------------------------
++------+-----+---------+-------+
+6 rows in set (0.01 sec)
+mysql-sql>
+
+
+
+
+Ejercicio 8
+
+mysql-sql> create table institutos(
+       ... instituto_id int not null unique primary key,
+       ... nombre_instituto varchar(50) not null,
+       ... estado_instituto enum(
+       ... 'Aguascalientes', 'Baja California',
+       ... 'Baja California Sur', 'Campeche',
+       ... 'Coahuila', 'Colima', 'Chiapas',
+       ... 'Chihuahua', 'Guanajuato', 'Guerrero',
+       ... 'Hidalgo', 'Jalisco', 'Mexico', 'Michoacan',
+       ... 'Morelos', 'Nayarit', 'Nuevo Leon', 'Oaxaca',
+       ... 'Puebla', 'Queretaro', 'Quintana Roo', 'San luis',
+       ... 'Sinaloa', 'Tabasco', 'Tamaulipas', 'Tlaxcala',
+       ...  'Durango', 'Veracruz', 'Yucatan', 'Zacatecas'));
+Query OK, 0 rows affected (0.19 sec)
+mysql-sql> desc institutos;
++------------------+------------------------------------------------------------
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+----------------------------------------------------------+------+-----+--------
+-+-------+
+| Field            | Type
+
+
+
+                                                          | Null | Key | Default
+ | Extra |
++------------------+------------------------------------------------------------
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+----------------------------------------------------------+------+-----+--------
+-+-------+
+| instituto_id     | int(11)
+
+
+
+                                                          | NO   | PRI | null
+ |       |
+| nombre_instituto | varchar(50)
+
+
+
+                                                          | NO   |     | null
+ |       |
+| estado_instituto | enum('Aguascalientes','Baja California','Baja California Su
+r','Campeche','Coahuila','Colima','Chiapas','Chihuahua','Guanajuato','Guerrero',
+'Hidalgo','Jalisco','Mexico','Michoacan','Morelos','Nayarit','Nuevo Leon','Oaxac
+a','Puebla','Queretaro','Quintana Roo','San luis','Sinaloa','Tabasco','Tamaulipa
+s','Tlaxcala','Durango','Veracruz','Yucatan','Zacatecas') | YES  |     | null
+ |       |
++------------------+------------------------------------------------------------
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+----------------------------------------------------------+------+-----+--------
+-+-------+
+3 rows in set (0.01 sec)
+mysql-sql>
+
+
+Ejercicio 10
+mysql-js> \connect -c usu_eva1@localhost:3306
+Creating a Classic Session to 'usu_eva1@localhost:3306'
+Enter password: ***
+Your MySQL connection id is 2
+Server version: 5.5.8-log MySQL Community Server (GPL)
+No default schema selected; type \use <schema> to set one.
+mysql-js> \sql
+Switching to SQL mode... Commands end with ;
+mysql-sql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| ejercicios         |
+| test               |
++--------------------+
+3 rows in set (0.00 sec)
+mysql-sql> \use ejercicios
+Schema set to `ejercicios`.
+mysql-sql> show tables;
++----------------------+
+| Tables_in_ejercicios |
++----------------------+
+| alumno               |
+| carrera              |
+| copia_alumno         |
+| docentes             |
+| dup_alumno           |
+| institutos           |
++----------------------+
+6 rows in set (0.00 sec)
+mysql-sql> alter table alumno
+       ... change nom_alumno nombre_alumno varchar(50),
+       ... change ape_pat_alumno apellido_pat_alumno varchar(50),
+       ... change ape_mat_alumno apellido_mat_alumno varchar(50);
+Query OK, 5 rows affected (0.23 sec)
+
+Records: 5  Duplicates: 0  Warnings: 0
+mysql-sql>
+
+
+
+Ejercicio 12
+Microsoft Windows [Versión 6.1.7601]
+Copyright (c) 2009 Microsoft Corporation. Reservados todos los derechos.
+
+C:\Windows\System32>cd ..
+
+C:\Windows>cd..
+
+C:\>cd wamp\bin\mysql\mysql5.5.8\bin
+
+C:\wamp\bin\mysql\mysql5.5.8\bin>mysqldump -u usu_eva1 -p ejercicios > full_back
+up_eva1.sql
+Enter password: ***
+
+C:\wamp\bin\mysql\mysql5.5.8\bin>
+
+
+Ejercicio 13
+
+C:\wamp\bin\mysql\mysql5.5.8\bin>mysqldump -u usu_eva1 -p ejercicios alumno > al
+umnos_backup.sql
+Enter password: ***
+
+C:\wamp\bin\mysql\mysql5.5.8\bin>
+
+
+Ejericio 14
+
+C:\wamp\bin\mysql\mysql5.5.8\bin>mysqldump -u usu_eva1 -p ejercicios alumno carr
+era > alumno_carrera_backup.sql
+Enter password: ***
+
+C:\wamp\bin\mysql\mysql5.5.8\bin>

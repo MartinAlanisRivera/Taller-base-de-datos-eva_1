@@ -1,0 +1,18 @@
+Correr MySql Shell
+conectar:
+\connect -c root@localhoost:3306 no pass
+
+cambiar a sql
+\sql
+
+mostrar bases de datos
+show databases;
+
+para conectar con una base de datos
+\Use base de datosX
+
+para mostrar las tabals dentro de la base de datos
+show tables;
+
+para seleccionar
+select

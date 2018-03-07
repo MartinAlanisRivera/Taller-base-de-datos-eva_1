@@ -1,0 +1,13 @@
+Eva_5_Key_Unique
+base de datos personal
+tabla empleado
+	clave llave primaria
+	apellido no nulo
+	nombre no nulo
+	salario_min default 20000
+	salario_max
+	departamento enum(sistemas,produccion,humanos,finanzas,jefes)
+	clave_acceso cadena unique
+
+insertar un campo para demostrar enum, deafult y unique (permite nulos)
+investigar como recuperar la ultima clave autoincrementada

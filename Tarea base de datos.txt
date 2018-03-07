@@ -1,0 +1,535 @@
+Usuario con todos los privilegios----Alfa
+Usuario con todos los privilegios en un Schema--- Beta
+Usuario con todos los privilegios en una tabla--- Delta
+Usuario con privilegios Select en una tabla----- Calipso
+Usuario con privilegios select en una columna---- Eco
+Usuario con Privilegios Insert en una tabla---- Sigma
+Usuario con privilegios insert en una Columna de una tabla--- Omega
+
+
+
+
+MySQL Shell 1.0.11
+
+Copyright (c) 2016, 2017, Oracle and/or its affiliates. All rights reserved.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type '\help' or '\?' for help; '\quit' to exit.
+
+Currently in JavaScript mode. Use \sql to switch to SQL mode and execute queries
+.
+mysql-js> \sql
+Switching to SQL mode... Commands end with ;
+mysql-sql> \connect -c root@localhost: 3306
+\connect [-<type>] <uri or $name>
+mysql-sql>  \connect -c root@localhost:3306;
+ERROR: Illegal character [;] found at position 19
+mysql-sql>  \connect -c root@localhost:3306
+Creating a Classic Session to 'root@localhost:3306'
+Enter password:
+Your MySQL connection id is 8
+Server version: 5.5.8-log MySQL Community Server (GPL)
+No default schema selected; type \use <schema> to set one.
+mysql-sql> \show databases;
+ERROR: 2006 (HY000): MySQL server has gone away
+The global session got disconnected.
+Attempting to reconnect to 'root@localhost:3306'..
+The global session was successfully reconnected.
+mysql-sql>  \connect -c root@localhost:3306
+Creating a Classic Session to 'root@localhost:3306'
+Enter password:
+Closing old connection...
+Your MySQL connection id is 10
+Server version: 5.5.8-log MySQL Community Server (GPL)
+No default schema selected; type \use <schema> to set one.
+mysql-sql> \show databases;
+ERROR: 1064 (42000): You have an error in your SQL syntax; check the manual that
+ corresponds to your MySQL server version for the right syntax to use near '\sho
+w databases' at line 1
+mysql-sql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| banco2             |
+| datoscoches        |
+| examen             |
+| inventario         |
+| mi examen          |
+| mysql              |
+| new_schema         |
+| performance_schema |
+| practica2azteca    |
+| test               |
++--------------------+
+11 rows in set (0.00 sec)
+mysql-sql> create user 'Alfa'@'localhost' identified by 'Alfa'
+       ... ;
+Query OK, 0 rows affected (0.20 sec)
+mysql-sql> grant all *.* to 'Alfa'@'localhost'
+       ... ;
+ERROR: 1064 (42000): You have an error in your SQL syntax; check the manual that
+ corresponds to your MySQL server version for the right syntax to use near '*.*
+to 'Alfa'@'localhost'' at line 1
+mysql-sql> grant all on *.* to 'Alfa'@'localhost'
+       ... ;
+Query OK, 0 rows affected (0.00 sec)
+mysql-sql> \connect -c Alfa@localhost:3306
+Creating a Classic Session to 'Alfa@localhost:3306'
+Enter password: ****
+Closing old connection...
+Your MySQL connection id is 11
+Server version: 5.5.8-log MySQL Community Server (GPL)
+No default schema selected; type \use <schema> to set one.
+mysql-sql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| banco2             |
+| datoscoches        |
+| examen             |
+| inventario         |
+| mi examen          |
+| mysql              |
+| new_schema         |
+| performance_schema |
+| practica2azteca    |
+| test               |
++--------------------+
+11 rows in set (0.00 sec)
+mysql-sql> \connect -c root@localhost:3306
+Creating a Classic Session to 'root@localhost:3306'
+Enter password:
+Closing old connection...
+Your MySQL connection id is 12
+Server version: 5.5.8-log MySQL Community Server (GPL)
+No default schema selected; type \use <schema> to set one.
+mysql-sql> create user 'Beta'@'localhost' identified by 'Beta'
+       ... ;
+Query OK, 0 rows affected (0.00 sec)
+mysql-sql> grant all on inventario.* to 'Beta'@'localhost'
+       ... ;
+Query OK, 0 rows affected (0.05 sec)
+mysql-sql> \connect -c Beta@localhost:3306
+Creating a Classic Session to 'Beta@localhost:3306'
+Enter password: ****
+Closing old connection...
+Your MySQL connection id is 13
+Server version: 5.5.8-log MySQL Community Server (GPL)
+No default schema selected; type \use <schema> to set one.
+mysql-sql> show databases
+       ... ;
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| inventario         |
+| test               |
++--------------------+
+3 rows in set (0.00 sec)
+mysql-sql> \connect -c root@localhost:3306
+Creating a Classic Session to 'root@localhost:3306'
+Enter password:
+Closing old connection...
+Your MySQL connection id is 14
+Server version: 5.5.8-log MySQL Community Server (GPL)
+No default schema selected; type \use <schema> to set one.
+mysql-sql> Create user 'Delta'@'localhost' identified by 'Delta'
+       ... ;
+Query OK, 0 rows affected (0.01 sec)
+mysql-sql> \use inventario
+Schema set to `inventario`.
+mysql-sql> show tables;
++-----------------------------------+
+| Tables_in_inventario              |
++-----------------------------------+
+| ciudad                            |
+| clientes                          |
+| direccion                         |
+| empleados                         |
+| inventario                        |
+| productos                         |
+| proveedor                         |
+| proveedor_has_productos           |
+| ventas                            |
+| ventas_has_clientes               |
+| ventas_has_clientes_has_productos |
++-----------------------------------+
+11 rows in set (0.01 sec)
+mysql-sql> grant all on inventario.ciudad to 'Delta'@'localhost'
+       ... ;
+Query OK, 0 rows affected (0.00 sec)
+mysql-sql> \connect -c Delta@localhost:3306
+Creating a Classic Session to 'Delta@localhost:3306'
+Enter password: *****
+Closing old connection...
+Your MySQL connection id is 15
+Server version: 5.5.8-log MySQL Community Server (GPL)
+No default schema selected; type \use <schema> to set one.
+mysql-sql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| inventario         |
+| test               |
++--------------------+
+3 rows in set (0.00 sec)
+mysql-sql> \use inventario
+Schema set to `inventario`.
+mysql-sql> show tables;
++----------------------+
+| Tables_in_inventario |
++----------------------+
+| ciudad               |
++----------------------+
+1 row in set (0.00 sec)
+mysql-sql> \connect -c root@localhost:3306
+Creating a Classic Session to 'root@localhost:3306'
+Enter password:
+Closing old connection...
+Your MySQL connection id is 16
+Server version: 5.5.8-log MySQL Community Server (GPL)
+No default schema selected; type \use <schema> to set one.
+mysql-sql> creeate user 'Epsilion'@'localhost' identified by 'Epsilion'
+       ... ;
+ERROR: 1064 (42000): You have an error in your SQL syntax; check the manual that
+ corresponds to your MySQL server version for the right syntax to use near 'cree
+ate user 'Epsilion'@'localhost' identified by 'Epsilion'' at line 1
+mysql-sql> create user 'Epsilion'@'localhsot' identified by 'Epsilion'
+       ... ;
+Query OK, 0 rows affected (0.01 sec)
+mysql-sql> grant select on inventario.ciudad to 'Epsilion'@'localhost'
+       ... ;
+Query OK, 0 rows affected (0.00 sec)
+mysql-sql> \connect -c Epsilion@localhost:3306
+Creating a Classic Session to 'Epsilion@localhost:3306'
+Enter password: ********
+ERROR: 1045 (28000): Access denied for user 'Epsilion'@'localhost' (using passwo
+rd: YES)
+mysql-sql> \connect -c Epsilion@localhsot:3306
+Creating a Classic Session to 'Epsilion@localhsot:3306'
+Enter password: ********
+ERROR: 2005 (HY000): Unknown MySQL server host 'localhsot' (0)
+mysql-sql>
+mysql-sql> drop User 'Epsilion'@'localhsot'
+       ... ;
+Query OK, 0 rows affected (0.05 sec)
+mysql-sql> Create User 'Epsilion'@'localhost' identified by 'Epsilion'
+       ... ;
+ERROR: 1396 (HY000): Operation CREATE USER failed for 'Epsilion'@'localhost'
+mysql-sql> CREATE USER 'Epsilion'@'localhost' identified by 'Epsilion'
+       ... ;
+ERROR: 1396 (HY000): Operation CREATE USER failed for 'Epsilion'@'localhost'
+mysql-sql> create user 'Calipso'@'localhost' identified by 'Calipso'
+       ... ;
+Query OK, 0 rows affected (0.00 sec)
+mysql-sql>  grant select on inventario.ciudad to 'Calipso'@'localhost'
+       ... ;
+Query OK, 0 rows affected (0.00 sec)
+mysql-sql>
+
+Server version: 5.5.8-log MySQL Community Server (GPL)
+No default schema selected; type \use <schema> to set one.
+mysql-sql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| inventario         |
+| test               |
++--------------------+
+3 rows in set (0.00 sec)
+mysql-sql> \use inventario
+Schema set to `inventario`.
+mysql-sql> show tables
+       ... ;
++----------------------+
+| Tables_in_inventario |
++----------------------+
+| ciudad               |
++----------------------+
+1 row in set (0.00 sec)
+mysql-sql> Select* from ciudad
+       ... ;
++----------+----------------------+
+| Num_City | Nombre de la entidad |
++----------+----------------------+
+|        1 | Chihuahua            |
+|        2 | Cd. Juarez           |
+|        3 | Cuathemoc            |
+|        4 | Guadalajara          |
+|        5 | Mordor               |
+|        6 | Gondor               |
+|        7 | Hogwarts             |
+|        8 | Tatooteine           |
+|        9 | Naboo                |
+|       10 | la comarca           |
++----------+----------------------+
+10 rows in set (0.10 sec)
+mysql-sql> \connect -c root@localhost:3306
+Creating a Classic Session to 'root@localhost:3306'
+Enter password:
+Closing old connection...
+Your MySQL connection id is 19
+Server version: 5.5.8-log MySQL Community Server (GPL)
+No default schema selected; type \use <schema> to set one.
+mysql-sql> create user 'Eco'@'localhost' identified by 'Eco'
+       ... ;
+Query OK, 0 rows affected (0.01 sec)
+mysql-sql> grant select (Num_city) on inventario.ciudad to 'Eco'@'localhost'
+       ... ;
+Query OK, 0 rows affected (0.00 sec)
+mysql-sql> \connect -c Eco@localhost:3306
+Creating a Classic Session to 'Eco@localhost:3306'
+Enter password: ***
+Closing old connection...
+Your MySQL connection id is 20
+Server version: 5.5.8-log MySQL Community Server (GPL)
+No default schema selected; type \use <schema> to set one.
+mysql-sql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| inventario         |
+| test               |
++--------------------+
+3 rows in set (0.00 sec)
+mysql-sql> \use inventario
+Schema set to `inventario`.
+mysql-sql> show tables;
++----------------------+
+| Tables_in_inventario |
++----------------------+
+| ciudad               |
++----------------------+
+1 row in set (0.00 sec)
+mysql-sql> select* from ciudad
+       ... ;
+ERROR: 1142 (42000): SELECT command denied to user 'Eco'@'localhost' for table '
+ciudad'
+mysql-sql> select Num_city from ciudad;
++----------+
+| Num_city |
++----------+
+|        1 |
+|        2 |
+|        3 |
+|        4 |
+|        5 |
+|        6 |
+|        7 |
+|        8 |
+|        9 |
+|       10 |
++----------+
+10 rows in set (0.00 sec)
+mysql-sql> \connect -c root@localhost:3306
+Creating a Classic Session to 'root@localhost:3306'
+Enter password:
+Closing old connection...
+Your MySQL connection id is 21
+Server version: 5.5.8-log MySQL Community Server (GPL)
+No default schema selected; type \use <schema> to set one.
+mysql-sql> create user 'Sigma'@'localhost' identified by 'Sigma'
+       ... ;
+Query OK, 0 rows affected (0.06 sec)
+mysql-sql> grant insert on inventario.ciudad to 'Sigma'@'localhost'
+       ... ;
+Query OK, 0 rows affected (0.00 sec)
+mysql-sql> \Connect -c Sigma@localhost:3306
+       ... ;
+ERROR: 1064 (42000): You have an error in your SQL syntax; check the manual that
+ corresponds to your MySQL server version for the right syntax to use near '\Con
+nect -c Sigma@localhost:3306' at line 1
+mysql-sql> \connect -c Sigma@localhost:3306
+Creating a Classic Session to 'Sigma@localhost:3306'
+Enter password: *****
+Closing old connection...
+Your MySQL connection id is 22
+Server version: 5.5.8-log MySQL Community Server (GPL)
+No default schema selected; type \use <schema> to set one.
+mysql-sql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| inventario         |
+| test               |
++--------------------+
+3 rows in set (0.00 sec)
+mysql-sql> \use inventario
+Schema set to `inventario`.
+mysql-sql> show tables;
++----------------------+
+| Tables_in_inventario |
++----------------------+
+| ciudad               |
++----------------------+
+1 row in set (0.00 sec)
+mysql-sql> select* from ciudad
+       ... ;
+ERROR: 1142 (42000): SELECT command denied to user 'Sigma'@'localhost' for table
+ 'ciudad'
+mysql-sql> show columbs;
+ERROR: 1064 (42000): You have an error in your SQL syntax; check the manual that
+ corresponds to your MySQL server version for the right syntax to use near 'colu
+mbs' at line 1
+mysql-sql> insert into ciudad (Num_City,Nombre de la entidad) values(11,Mars)
+       ... ;
+ERROR: 1064 (42000): You have an error in your SQL syntax; check the manual that
+ corresponds to your MySQL server version for the right syntax to use near 'de l
+a entidad) values(11,Mars)' at line 1
+mysql-sql> insert into ciudad (Num_city) values(11)
+       ... ;
+Query OK, 1 row affected (0.57 sec)
+mysql-sql> \connect -c root@localhost:3306
+Creating a Classic Session to 'root@localhost:3306'
+Enter password:
+Closing old connection...
+Your MySQL connection id is 23
+Server version: 5.5.8-log MySQL Community Server (GPL)
+No default schema selected; type \use <schema> to set one.
+mysql-sql> \use inventario
+Schema set to `inventario`.
+mysql-sql> select* from ciudad;
++----------+----------------------+
+| Num_City | Nombre de la entidad |
++----------+----------------------+
+|        1 | Chihuahua            |
+|        2 | Cd. Juarez           |
+|        3 | Cuathemoc            |
+|        4 | Guadalajara          |
+|        5 | Mordor               |
+|        6 | Gondor               |
+|        7 | Hogwarts             |
+|        8 | Tatooteine           |
+|        9 | Naboo                |
+|       10 | la comarca           |
+|       11 | null                 |
++----------+----------------------+
+11 rows in set (0.00 sec)
+mysql-sql> create user 'Omega'@'localhost' identified by 'Omega'
+       ... ;
+Query OK, 0 rows affected (0.00 sec)
+mysql-sql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| banco2             |
+| datoscoches        |
+| examen             |
+| inventario         |
+| mi examen          |
+| mysql              |
+| new_schema         |
+| performance_schema |
+| practica2azteca    |
+| test               |
++--------------------+
+11 rows in set (0.00 sec)
+mysql-sql> \use inventario
+Schema set to `inventario`.
+mysql-sql> show tables
+       ... ;
++-----------------------------------+
+| Tables_in_inventario              |
++-----------------------------------+
+| ciudad                            |
+| clientes                          |
+| direccion                         |
+| empleados                         |
+| inventario                        |
+| productos                         |
+| proveedor                         |
+| proveedor_has_productos           |
+| ventas                            |
+| ventas_has_clientes               |
+| ventas_has_clientes_has_productos |
++-----------------------------------+
+11 rows in set (0.01 sec)
+mysql-sql> select* from clientes;
++------------+---------+-----------+------------+--------------------+----------
+-------+
+| no_cliente | nombre  | a_paterno | a_materno  | Direccion_Num casa | Ciudad_Nu
+m_City |
++------------+---------+-----------+------------+--------------------+----------
+-------+
+|          1 | Martin  | Alanis    | Rivera     |                  2 |
+     2 |
+|          2 | Anaid   | Tena      | Farias     |                  1 |
+     1 |
+|          3 | Israel  | Garcia    | Acosta     |                  3 |
+     3 |
+|          4 | Jose    | Torres    | Torres     |                  4 |
+     4 |
+|          5 | Sauron  | Se±or     | Oscuro     |                  6 |
+     5 |
+|          6 | Aragorn | Isildur   | Dunedain   |                  7 |
+     6 |
+|          7 | Harry   | Potter    | Evans      |                  8 |
+     7 |
+|          8 | Luke    | Skywalker | Amidala    |                 10 |
+     8 |
+|          9 | Padme   | Amidala   | de Naboo   |                 11 |
+     9 |
+|         10 | Frodo   | Bolson    | Brandigamo |                 12 |
+    10 |
++------------+---------+-----------+------------+--------------------+----------
+-------+
+10 rows in set (0.19 sec)
+mysql-sql> grant insert (nombre) on inventario.clientes to 'Omega'@'localhost'
+       ... ;
+Query OK, 0 rows affected (0.00 sec)
+mysql-sql> \connect -c Omega@localhost:3306
+Creating a Classic Session to 'Omega@localhost:3306'
+Enter password: *****
+Closing old connection...
+Your MySQL connection id is 24
+Server version: 5.5.8-log MySQL Community Server (GPL)
+No default schema selected; type \use <schema> to set one.
+mysql-sql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| inventario         |
+| test               |
++--------------------+
+3 rows in set (0.00 sec)
+mysql-sql> \use inventario
+Schema set to `inventario`.
+mysql-sql> show tables;
++----------------------+
+| Tables_in_inventario |
++----------------------+
+| clientes             |
++----------------------+
+1 row in set (0.00 sec)
+mysql-sql> select* from clientes;
+ERROR: 1142 (42000): SELECT command denied to user 'Omega'@'localhost' for table
+ 'clientes'
+mysql-sql> insert into (nombres) values(Gandalf);
+ERROR: 1064 (42000): You have an error in your SQL syntax; check the manual that
+ corresponds to your MySQL server version for the right syntax to use near '(nom
+bres) values(Gandalf)' at line 1
+mysql-sql> insert into (nombres) values('gandalf');
+ERROR: 1064 (42000): You have an error in your SQL syntax; check the manual that
+ corresponds to your MySQL server version for the right syntax to use near '(nom
+bres) values('gandalf')' at line 1
+mysql-sql> insert into (nombre) values('Gandalf');
+ERROR: 1064 (42000): You have an error in your SQL syntax; check the manual that
+ corresponds to your MySQL server version for the right syntax to use near '(nom
+bre) values('Gandalf')' at line 1
+mysql-sql> insert into (nombre) values('Gandalf')
+       ... ;
+ERROR: 1064 (42000): You have an error in your SQL syntax; check the manual that
+ corresponds to your MySQL server version for the right syntax to use near '(nom
+bre) values('Gandalf')' at line 1
+mysql-sql>

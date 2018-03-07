@@ -1,0 +1,222 @@
+ 
+MySQL Shell 1.0.11
+
+Copyright (c) 2016, 2017, Oracle and/or its affiliates. All rights reserved.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type '\help' or '\?' for help; '\quit' to exit.
+
+Currently in JavaScript mode. Use \sql to switch to SQL mode and execute queries
+.
+mysql-js> \connect -c root@localhost:3306
+Creating a Classic Session to 'root@localhost:3306'
+Enter password:
+Your MySQL connection id is 33
+Server version: 5.5.8-log MySQL Community Server (GPL)
+No default schema selected; type \use <schema> to set one.
+mysql-js> \Sql
+SyntaxError: Unexpected token ILLEGAL
+mysql-js> \SQL
+SyntaxError: Unexpected token ILLEGAL
+mysql-js> \sql
+Switching to SQL mode... Commands end with ;
+mysql-sql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| banco2             |
+| datoscoches        |
+| examen             |
+| inventario         |
+| mi examen          |
+| mundo              |
+| mysql              |
+| new_schema         |
+| performance_schema |
+| practica2azteca    |
+| test               |
++--------------------+
+12 rows in set (0.04 sec)
+mysql-sql> \use datoscoches
+Schema set to `datoscoches`.
+mysql-sql> show tables;
++-----------------------+
+| Tables_in_datoscoches |
++-----------------------+
+| coches                |
+| propietarios          |
++-----------------------+
+2 rows in set (0.00 sec)
+mysql-sql> create table mundo.copia_propietarios as select * from datoscoches.pr
+opietarios;
+Query OK, 3 rows affected (0.55 sec)
+
+Records: 3  Duplicates: 0  Warnings: 0
+mysql-sql> \use mundo;
+MySQL Error (1049): Unknown database 'mundo;'
+mysql-sql> use mundo
+       ... ;
+Query OK, 0 rows affected (0.00 sec)
+mysql-sql> \use mundo
+Schema set to `mundo`.
+mysql-sql> show tables;
++--------------------+
+| Tables_in_mundo    |
++--------------------+
+| copia_propietarios |
+| paises             |
+| paises_copia       |
++--------------------+
+3 rows in set (0.00 sec)
+mysql-sql> select * from copia_propietarios limit 2;
++-----+--------+------+
+| DNI | Nombre | Edad |
++-----+--------+------+
+| 1A  | Pepe   |   30 |
+| 1B  | Ana    |   40 |
++-----+--------+------+
+2 rows in set (0.06 sec)
+mysql-sql> create temporary table mundo.copia_coches_temp as select * from datos
+coches.coches;
+Query OK, 3 rows affected (0.25 sec)
+
+Records: 3  Duplicates: 0  Warnings: 0
+mysql-sql> \use mundo
+Schema set to `mundo`.
+mysql-sql> show tables;
++--------------------+
+| Tables_in_mundo    |
++--------------------+
+| copia_propietarios |
+| paises             |
+| paises_copia       |
++--------------------+
+3 rows in set (0.00 sec)
+mysql-sql> select * fromcopia_coches_temp;
+ERROR: 1064 (42000): You have an error in your SQL syntax; check the manual that
+ corresponds to your MySQL server version for the right syntax to use near 'from
+copia_coches_temp' at line 1
+mysql-sql> select * from copia_coches_temp limit 2;
++-----------+-------+--------+-----+
+| Matricula | Marca | Precio | DNI |
++-----------+-------+--------+-----+
+| BA-3333   | Seat  |   3000 | 1B  |
+| MA-1111   | Opel  |   1000 | 1A  |
++-----------+-------+--------+-----+
+2 rows in set (0.00 sec)
+mysql-sql> \connect -c guardian@localhost:3306
+Creating a Classic Session to 'guardian@localhost:3306'
+Enter password: ********
+Closing old connection...
+Your MySQL connection id is 34
+Server version: 5.5.8-log MySQL Community Server (GPL)
+No default schema selected; type \use <schema> to set one.
+mysql-sql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| mundo              |
+| test               |
++--------------------+
+3 rows in set (0.00 sec)
+mysql-sql> create table comida_mundo(
+       ... comida_id int,
+       ... nombre_comida 'ENUM(','Burritos','Carne asada','Chiles en ahogada'),
+       ... precio decimal (10,2));
+ERROR: 1046 (3D000): No database selected
+mysql-sql> \use mundo
+Schema set to `mundo`.
+mysql-sql> create table comida_mundo(
+       ... comida_id int,
+       ... nombre_comida 'ENUM(','Burritos','Carne asada','Chiles en ahogada'),
+       ... precio decimal (10,2));
+ERROR: 1064 (42000): You have an error in your SQL syntax; check the manual that
+ corresponds to your MySQL server version for the right syntax to use near ''ENU
+M(','Burritos','Carne asada','Chiles en ahogada'),
+precio decimal (10,2))' at line 3
+mysql-sql> create table comida_mundo(
+       ... comida_id int,
+       ... nombre_comida ENUM('Tacos','Burritos','Tamales'),
+       ... precio decimal (10,2));
+Query OK, 0 rows affected (0.23 sec)
+mysql-sql> desc comida_mundo;
++---------------+------------------------------------+------+-----+---------+---
+----+
+| Field         | Type                               | Null | Key | Default | Ex
+tra |
++---------------+------------------------------------+------+-----+---------+---
+----+
+| comida_id     | int(11)                            | YES  |     | null    |
+    |
+| nombre_comida | enum('Tacos','Burritos','Tamales') | YES  |     | null    |
+    |
+| precio        | decimal(10,2)                      | YES  |     | null    |
+    |
++---------------+------------------------------------+------+-----+---------+---
+----+
+3 rows in set (0.04 sec)
+mysql-sql> insert into comida_mundo values(1,'Burritos',10.2);
+Query OK, 1 row affected (0.17 sec)
+mysql-sql> select * from comida_mundo;
++-----------+---------------+--------+
+| comida_id | nombre_comida | precio |
++-----------+---------------+--------+
+|         1 | Burritos      |  10.20 |
++-----------+---------------+--------+
+1 row in set (0.00 sec)
+mysql-sql> insert into comida_mundo values(1,'Chacales',10.2);
+Query OK, 1 row affected, 1 warning (0.15 sec)
+Warning (code 1265): Data truncated for column 'nombre_comida' at row 1
+mysql-sql> select * from comida_mundo;
++-----------+---------------+--------+
+| comida_id | nombre_comida | precio |
++-----------+---------------+--------+
+|         1 | Burritos      |  10.20 |
+|         1 |               |  10.20 |
++-----------+---------------+--------+
+2 rows in set (0.00 sec)
+mysql-sql> create table viajero(
+       ... viajero_id int not null,
+       ... articulo varchar(40),
+       ... viaticos decimal(10,2) not null);
+Query OK, 0 rows affected (0.21 sec)
+mysql-sql> desc viajero
+       ... ;
++------------+---------------+------+-----+---------+-------+
+| Field      | Type          | Null | Key | Default | Extra |
++------------+---------------+------+-----+---------+-------+
+| viajero_id | int(11)       | NO   |     | null    |       |
+| articulo   | varchar(40)   | YES  |     | null    |       |
+| viaticos   | decimal(10,2) | NO   |     | null    |       |
++------------+---------------+------+-----+---------+-------+
+3 rows in set (0.01 sec)
+mysql-sql> insert into viajero(articulo','viaticos') values ('algo',10000);
+       ... ;
+       ...
+       ...
+       ... insert into viajero('articulo
+       ... insert into viajero(articulo','viaticos') values ('algo',10000)
+       ... ;
+       ... cancel;
+ERROR: 1064 (42000): You have an error in your SQL syntax; check the manual that
+ corresponds to your MySQL server version for the right syntax to use near '','v
+iaticos') values ('algo',10000);
+insert into viajero('articulo
+insert into v' at line 1
+       ... insert into viajero(articulo','viaticos') values ('algo',10000)
+       ... ;
+       ... cancel;
+ERROR: 1064 (42000): You have an error in your SQL syntax; check the manual that
+ corresponds to your MySQL server version for the right syntax to use near '','v
+iaticos') values ('algo',10000)
+cancel' at line 1
+       ... insert into viajero(articulo,viaticos) values ('algo',10000)
+       ... ;
+Query OK, 1 row affected, 1 warning (0.11 sec)
+Warning (code 1364): Field 'viajero_id' doesn't have a default value
+mysql-sql>
